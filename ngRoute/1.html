@@ -7,9 +7,10 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="#/home">home</a></li>
+    <li class="active"><a href="#/home">home</a></li>
     <li><a href="#/user">user</a></li>
     <li><a href="#/contact">contact</a></li>
+    <li><a href="#/settings">settings</a></li>
 </ul>
 <!--指定页面的插入位置-->
 <div ng-view></div>
@@ -19,6 +20,23 @@
 <script>
     var app = angular.module('appModule',['ngRoute']);
     //进行配置路径
+    app.run(function ($rootScope,$location) {
+        $rootScope.flag = true;//当flag为true时，并且当前点击的路由是/settings,那么我们就跳转到首页
+        //我们需要监听路由的变化
+        $rootScope.$on('$routeChangeStart',function (event,toState,fromState) {
+            //event代表当前事件源
+            //toState 代表去哪个路由
+            //fromState从哪个路由来
+            console.log(toState);
+            //取出当前的点击路径
+            if(toState.$$route.originalPath=='/settings'&&$rootScope.flag){
+                //当我们点击的是/settings的路由，并且无权限，跳转到首页
+                alert('您没有权限');
+                $location.path('/home');
+            }
+
+        })
+    });
     app.config(function ($routeProvider) {
         //路由不同情况跳转不同页面
         $routeProvider.when('/home',{
@@ -35,7 +53,10 @@
             //匹配后面带有:id代表的就是1,2,3参数的
             templateUrl:"tmpl/userOne.html",
             controller:'userOneCtrl'
-        }).otherwise('/home'); //当都不满足时
+        }).when('/settings',{
+            template:'<div>settings</div>'
+        })
+        .otherwise('/home'); //当都不满足时
     });
     //一般情况下一个路由对应一个控制器
     app.controller('homeCtrl',function ($scope) {
@@ -55,8 +76,12 @@
         });
         $scope.name='user';
     });
-    app.controller('contactCtrl',function ($scope) {
-        $scope.name='contactCtrl'
+    app.controller('contactCtrl',function ($scope,$location) {
+        $scope.name='contactCtrl';
+        $scope.go = function () {
+            //$location 他是对window.location的封装
+            $location.path('/userOne/3'); //通过代码进行跳转,会默认匹配到/userOne/3的路由上走对应的逻辑
+        }
     });
 </script>
 </body>
