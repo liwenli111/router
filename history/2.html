@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appModule">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body >
+<body>
+{{"aacaaaa" | my1:0 }}
+<div ng-controller="ctrl1"></div>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    var app = angular.module('appModule',[]);
+    app.filter('my1',function (uppercaseFilter) {
+        return function (input,begin,end) {
+            return uppercaseFilter(input.slice(begin))
+        }
+    })
+    app.run(function (my,value,$rootScope) {
+        console.log('value'+value);
+        console.log('run');
+    })
+    app.config(function (myProvider) {
+      myProvider.currency = '$';
+        console.log('配置');
+    });
+    //config   . > run 
+    app.provider('my',function () {
+        console.log('服务');
+        this.currency = '￥';
+        var that = this;
+        this.$get = function () {
+            return {
+                add:function () {
+                    return that.currency
+                }
+            }
+        }
+    })
+    app.value('value',1)
+
+    app.controller('ctrl1',function ($rootScope,value) {
+        console.log('控制器');
+    })
+
+
+</script>
+</body>
+</html>

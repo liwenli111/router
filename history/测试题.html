@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appModule">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-controller="myCtrl">
+{{"abc" | uppercase | lowercase | limitTo:1}}
+<style>
+    [ng-cloak]{
+        display: none;
+    }
+</style>
+
+<body>
+<div ng-controller="ctrl1"></div>
+<div ng-controller="ctrl2"></div>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+    var app = angular.module('appModule',[]);
+
+    app.controller('ctrl1',function ($rootScope,$httpr) {
+        $http.aa = 1;
+       /* $rootScope.$on('emit',function (err,data) {
+            console.log(data);
+        })*/
+    })
+    app.controller('ctrl2',function ($rootScope,$http) {
+//        $rootScope.$emit('emit','emit')
+        console.log($http.aa);
+    });
+    //emit 是给父级发射并且自己也会接收到
+    //broadcast给子级广播，自己也会知道
+    //1.ng-if为false时内部指令不执行
+    //2.遍历数组时如果内容重复需要增加"唯一"索引去遍历 track by $index
+
+    //4.指令 @符号取得是字符串
+    // = 取得是当前作用域上的值,并且是双向绑定的
+
+
+    app.run(function ($rootScope) {
+        $rootScope.arr =  [
+           'zfpx',
+           'zfpx',
+           'zfpx',
+        ]
+    })
+
+    app.controller('myCtrl',function ($scope,my) {
+        //当我们将provider注入到控制器是会调用$get方法
+        $scope.name = 100;
+    })
+  /*  app.provider('my',function () {
+        this.$get = function () {
+            return {}
+        }
+    })
+
+    app.factory('factory',function () {
+            return
+
+    })
+    app.service('services',function () {
+        this.add  = function () {}
+    })*/
+
+   /* app.value('my',{
+        a:function () {},
+        b:2
+    })*/
+    //constant可配置
+    app.constant('my',{
+        a:function () {},
+        b:2
+    })
+
+
+</script>
+</body>
+</html>
