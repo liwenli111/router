@@ -23,15 +23,41 @@
         //路由不同情况跳转不同页面
         $routeProvider.when('/home',{
             //template:"<div></div>"
-            templateUrl:"tmpl/home.html"
+            templateUrl:"tmpl/home.html",
+            controller:'homeCtrl'
         }).when('/user',{
-            templateUrl:"tmpl/user.html"
+            templateUrl:"tmpl/user.html",
+            controller:'userCtrl'
         }).when('/contact',{
-            templateUrl:"tmpl/contact.html"
+            templateUrl:"tmpl/contact.html",
+            controller:'contactCtrl'
+        }).when('/userOne/:id',{
+            //匹配后面带有:id代表的就是1,2,3参数的
+            templateUrl:"tmpl/userOne.html",
+            controller:'userOneCtrl'
         }).otherwise('/home'); //当都不满足时
-    })
+    });
+    //一般情况下一个路由对应一个控制器
+    app.controller('homeCtrl',function ($scope) {
+        $scope.name='home';
+    });
+    app.controller('userOneCtrl',function ($scope,$routeParams) {
+        console.log( $routeParams);
+        $scope.id = $routeParams.id;
+        ///userOne/:id  /userOne/1
+        //获取到的是路径后面:后面的名字对应的路径的值{id:1}
 
-
+        //获取id，通过路径，通过$routeParams
+    });
+    app.controller('userCtrl',function ($scope,$http) {
+        $http.get('./user.json').then(function (data) {
+            $scope.userList = data.data;
+        });
+        $scope.name='user';
+    });
+    app.controller('contactCtrl',function ($scope) {
+        $scope.name='contactCtrl'
+    });
 </script>
 </body>
 </html>

@@ -1,1 +1,11 @@
-user
+<ul class="list-group">
+    <li ng-repeat="list in userList">
+       <a href="#/userOne/{{list.id}}"> {{list.name}} {{list.age}} {{list.addr}} </a>
+    </li>
+</ul>
+<!--我们遍历出每一个人后，要给每个人配一个详情页，通过id
+    /userOne/1
+    /userOne/2
+    /userOne/3
+
+-->
